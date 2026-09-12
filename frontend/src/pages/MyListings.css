@@ -1,0 +1,226 @@
+/* ── My Listings Page ─────────────────────────────────────────── */
+.my-listings-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-bottom: 4rem;
+}
+
+.my-listings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.my-listings-header h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.my-listings-header p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-top: 0.25rem;
+}
+
+.my-listings-stats {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-pill {
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.stat-num {
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--primary-200);
+}
+
+/* ── Item List Grid ───────────────────────────────────────────── */
+.my-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.my-item-card {
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  transition: all var(--transition-fast);
+}
+
+.my-item-card:hover {
+  border-color: var(--border-hover);
+  background: rgba(26, 37, 64, 0.85);
+}
+
+.my-item-main {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  min-width: 280px;
+  flex: 1;
+}
+
+.my-item-thumb {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #030712;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-subtle);
+}
+
+.my-item-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.my-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.my-item-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.my-item-title:hover {
+  color: var(--primary-500);
+}
+
+.my-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}
+
+.my-item-price {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-main);
+  min-width: 110px;
+}
+
+.my-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+/* ── Delete Confirmation Modal ────────────────────────────────── */
+.confirm-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 1000;
+}
+
+.confirm-modal-card {
+  max-width: 440px;
+  width: 100%;
+  padding: 2rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-hover);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.25rem;
+}
+
+.confirm-icon-wrap {
+  width: 54px;
+  height: 54px;
+  border-radius: var(--radius-full);
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--danger);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirm-modal-card h3 {
+  font-size: 1.35rem;
+  color: var(--text-main);
+}
+
+.confirm-modal-card p {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 0.85rem;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.confirm-actions .btn {
+  flex: 1;
+}
+
+/* ── Empty State ──────────────────────────────────────────────── */
+.empty-listings-box {
+  padding: 4rem 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.empty-icon {
+  color: var(--text-dim);
+}
+
+.empty-listings-box h3 {
+  font-size: 1.4rem;
+  color: var(--text-main);
+}
+
+.empty-listings-box p {
+  color: var(--text-muted);
+  max-width: 420px;
+  font-size: 0.95rem;
+}

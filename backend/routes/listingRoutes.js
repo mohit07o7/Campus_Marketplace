@@ -8,18 +8,17 @@ const {
 } = require("../controllers/listingController");
 const { protect } = require("../middleware/authMiddleware");
 const upload = require("../middleware/uploadMiddleware");
+const { validateListing } = require("../middleware/validationMiddleware");
 
 const router = express.Router();
 
-// Public routes (anyone can view listings)
+// Public
 router.get("/", getListings);
 router.get("/:id", getListingById);
 
-// Protected routes
-// upload.array("images", 5) runs BEFORE the controller
-// It parses multipart/form-data and populates req.files
-router.post("/", protect, upload.array("images", 5), createListing);
-router.put("/:id", protect, upload.array("images", 5), updateListing);
+// Private (upload runs before validation so req.body is populated from form-data)
+router.post("/", protect, upload.array("images", 5), validateListing, createListing);
+router.put("/:id", protect, upload.array("images", 5), validateListing, updateListing);
 router.delete("/:id", protect, deleteListing);
 
 module.exports = router;

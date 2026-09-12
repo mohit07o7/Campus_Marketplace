@@ -58,13 +58,86 @@ const createListing = async (req, res) => {
     }
 };
 
-// @desc    Fetch all listings
+// @desc    Fetch all listings with search, filter, sort, and pagination
 // @route   GET /api/listings
 // @access  Public
+// Supports: ?search= &category= &minPrice= &maxPrice= &sort= &page= &limit=
 const getListings = async (req, res) => {
     try {
-        const listings = await Listing.find({}).populate("sellerId", "name Reg_No");
-        res.json(listings);
+        const {
+            search,
+            category,
+            minPrice,
+            maxPrice,
+            sort,
+            page = 1,
+            limit = 20,
+        } = req.query;
+
+        // ── Phase 1: Build the query object ───────────────────────────────────
+        const query = {};
+
+        // Phase 1 — Text search across title AND description (case-insensitive)
+        if (search) {
+            query.$or = [
+                { title: { $regex: search, $options: "i" } },
+                { description: { $regex: search, $options: "i" } },
+            ];
+        }
+
+        // Phase 2 — Category filter (exact match)
+        if (category) {
+            query.category = category;
+        }
+
+        // Phase 3 — Price range filter
+        if (minPrice || maxPrice) {
+            query.price = {};
+            if (minPrice) query.price.$gte = Number(minPrice);
+            if (maxPrice) query.price.$lte = Number(maxPrice);
+        }
+
+        // ── Phase 4: Sort options ─────────────────────────────────────────────
+        let sortOption = {};
+        switch (sort) {
+            case "oldest":
+                sortOption = { createdAt: 1 };
+                break;
+            case "price_asc":
+                sortOption = { price: 1 };
+                break;
+            case "price_desc":
+                sortOption = { price: -1 };
+                break;
+            case "newest":
+            default:
+                sortOption = { createdAt: -1 }; // Default: newest first
+        }
+
+        // ── Phase 5: Pagination math ──────────────────────────────────────────
+        const pageNum  = Math.max(1, Number(page));    // Can't be less than 1
+        const limitNum = Math.min(100, Math.max(1, Number(limit))); // Between 1–100
+        const skip     = (pageNum - 1) * limitNum;
+
+        // ── Phase 6: Run the query with everything combined ───────────────────
+        const [listings, total] = await Promise.all([
+            Listing.find(query)
+                .populate("sellerId", "name Reg_No")
+                .sort(sortOption)
+                .skip(skip)
+                .limit(limitNum),
+            Listing.countDocuments(query), // Total count for pagination metadata
+        ]);
+
+        res.json({
+            listings,
+            pagination: {
+                total,                          // Total matching documents
+                page: pageNum,                  // Current page
+                pages: Math.ceil(total / limitNum), // Total number of pages
+                limit: limitNum,
+            },
+        });
     } catch (error) {
         console.error("Error fetching listings:", error);
         res.status(500).json({ message: "Server Error" });

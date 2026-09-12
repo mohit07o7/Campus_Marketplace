@@ -1,0 +1,258 @@
+/* ── Create Listing Page ──────────────────────────────────────── */
+.create-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-bottom: 4rem;
+}
+
+.create-header {
+  margin-bottom: 2rem;
+}
+
+.create-header h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+}
+
+.create-header p {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+/* ── Split Layout: Form on Left, Live Preview on Right ────────── */
+.create-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+@media (max-width: 990px) {
+  .create-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .create-preview-col {
+    order: 2;
+  }
+}
+
+.create-form-card {
+  padding: 2rem;
+}
+
+/* ── Drag & Drop Zone ─────────────────────────────────────────── */
+.dropzone-box {
+  border: 2px dashed var(--border-hover);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem 1.5rem;
+  text-align: center;
+  background: rgba(15, 23, 41, 0.4);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.dropzone-box:hover,
+.dropzone-box.drag-over {
+  border-color: var(--primary-500);
+  background: rgba(99, 102, 241, 0.08);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
+}
+
+.dropzone-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: rgba(99, 102, 241, 0.12);
+  color: var(--primary-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropzone-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.dropzone-subtext {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+.file-input-hidden {
+  display: none;
+}
+
+/* ── Thumbnails Strip ─────────────────────────────────────────── */
+.previews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: 0.85rem;
+  margin-top: 1.25rem;
+}
+
+.preview-thumb-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+}
+
+.preview-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.preview-badge-cover {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  background: var(--primary-600);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.15rem 0.4rem;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.preview-remove-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-full);
+  background: rgba(0, 0, 0, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.preview-remove-btn:hover {
+  background: var(--danger);
+  transform: scale(1.1);
+}
+
+/* ── Form Inputs ──────────────────────────────────────────────── */
+.input-with-counter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.35rem;
+}
+
+.char-counter {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.char-counter.limit-near {
+  color: var(--warning);
+}
+
+.price-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.price-currency-sign {
+  position: absolute;
+  left: 1rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+
+.price-input-wrapper input {
+  padding-left: 2.25rem !important;
+}
+
+.form-field-error {
+  font-size: 0.78rem;
+  color: var(--danger);
+  margin-top: 0.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.form-banner-error {
+  padding: 0.85rem 1.1rem;
+  border-radius: var(--radius-md);
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: var(--danger);
+  font-size: 0.88rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+}
+
+/* ── Live Preview Column ──────────────────────────────────────── */
+.create-preview-col {
+  position: sticky;
+  top: 6rem;
+}
+
+.preview-title-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.preview-title-bar h3 {
+  font-size: 1.05rem;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.preview-card-wrap {
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+.preview-tip-box {
+  margin-top: 1.5rem;
+  padding: 1.1rem;
+  border-radius: var(--radius-md);
+  background: rgba(99, 102, 241, 0.05);
+  border: 1px solid rgba(99, 102, 241, 0.18);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.preview-tip-box ul {
+  padding-left: 1.2rem;
+  margin-top: 0.4rem;
+}
+
+.preview-tip-box li {
+  margin-bottom: 0.25rem;
+}
