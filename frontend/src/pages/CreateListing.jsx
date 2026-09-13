@@ -186,9 +186,11 @@ export default function CreateListing() {
         err.response?.data?.errors?.[0]?.message ||
         'Failed to publish listing. Please check your connection and try again.'
       setServerError(msg)
-    } finally {
+    }
+    finally {
       setSubmitting(false)
     }
+
   }
 
   return (

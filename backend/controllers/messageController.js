@@ -113,6 +113,11 @@ const getMessageThread = async (req, res) => {
         const myId = req.user._id;
         const { userId: otherId } = req.params;
 
+        // Validate that otherId is a proper ObjectId before querying
+        if (!otherId || otherId === 'undefined' || !mongoose.Types.ObjectId.isValid(otherId)) {
+            return res.status(400).json({ message: "Invalid or missing userId parameter" });
+        }
+
         const messages = await Message.find({
             $or: [
                 { senderId: myId, receiverId: otherId },

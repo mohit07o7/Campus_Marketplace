@@ -20,7 +20,7 @@ app.use(
 
 // Rate limiter — max 100 requests per 15 minutes per IP
 const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
+    windowMs: 15 * 60 * 1000,
     max: 100,
     message: { message: "Too many requests from this IP, please try again after 15 minutes." },
     standardHeaders: true,
@@ -28,13 +28,14 @@ const limiter = rateLimit({
 });
 app.use("/api", limiter);
 
-// Stricter limiter for auth routes — max 10 attempts per 15 minutes
+// Stricter limiter for auth routes — max 50 attempts per 15 minutes
 const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 10,
+    max: 50,
     message: { message: "Too many login/register attempts, please try again later." },
     standardHeaders: true,
     legacyHeaders: false,
+    skip: (req) => process.env.NODE_ENV === 'development',  // disable in dev
 });
 app.use("/api/users/login", authLimiter);
 app.use("/api/users/register", authLimiter);

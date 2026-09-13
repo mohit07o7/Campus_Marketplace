@@ -24,10 +24,16 @@ api.interceptors.request.use(
 
 // ── Response Interceptor ──────────────────────────────────────────────────────
 // If any request returns 401 (Unauthorized / token expired), auto-logout.
+// IMPORTANT: Skip auto-logout for auth routes — login/register legitimately
+// return 401 for wrong credentials, so we must NOT redirect there.
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const isAuthRoute = error.config?.url?.includes('/users/login') ||
+                        error.config?.url?.includes('/users/register')
+    const hasToken = !!localStorage.getItem('token')
+
+    if (error.response?.status === 401 && !isAuthRoute && hasToken) {
       localStorage.removeItem('token')
       localStorage.removeItem('user')
       window.location.href = '/login'

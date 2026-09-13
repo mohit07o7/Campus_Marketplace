@@ -60,6 +60,11 @@ export default function Messages() {
   // Load message thread for a specific partner
   const selectPartner = useCallback(
     async (partner, listingId = null) => {
+      // Guard: partner must have a valid _id
+      if (!partner?._id || partner._id === 'undefined') {
+        console.warn('selectPartner called with invalid partner:', partner)
+        return
+      }
       setActivePartner(partner)
       if (listingId) setActiveListingId(listingId)
       setLoadingMessages(true)
@@ -91,17 +96,17 @@ export default function Messages() {
 
       if (sellerParam) {
         // Find existing conversation with this user
+        // NOTE: $lookup returns arrays, so sender/receiver are [{_id, name}]
         const existing = convs.find((c) => {
-          const senderId = c.sender?._id || c.sender
-          const receiverId = c.receiver?._id || c.receiver
-          return senderId === sellerParam || receiverId === sellerParam
+          const sender = Array.isArray(c.sender) ? c.sender[0] : c.sender
+          const receiver = Array.isArray(c.receiver) ? c.receiver[0] : c.receiver
+          return sender?._id?.toString() === sellerParam || receiver?._id?.toString() === sellerParam
         })
 
         if (existing) {
-          const partner =
-            (existing.sender?._id || existing.sender) === user?._id
-              ? existing.receiver
-              : existing.sender
+          const sender = Array.isArray(existing.sender) ? existing.sender[0] : existing.sender
+          const receiver = Array.isArray(existing.receiver) ? existing.receiver[0] : existing.receiver
+          const partner = sender?._id?.toString() === user?._id ? receiver : sender
           selectPartner(partner, listingParam || existing.listingId)
         } else {
           // New conversation partner not in conversations list yet
@@ -112,10 +117,9 @@ export default function Messages() {
       } else if (convs.length > 0 && window.innerWidth > 820) {
         // Auto-select first conversation on desktop
         const first = convs[0]
-        const partner =
-          (first.sender?._id || first.sender) === user?._id
-            ? first.receiver
-            : first.sender
+        const sender = Array.isArray(first.sender) ? first.sender[0] : first.sender
+        const receiver = Array.isArray(first.receiver) ? first.receiver[0] : first.receiver
+        const partner = sender?._id?.toString() === user?._id ? receiver : sender
         selectPartner(partner, first.listingId)
       }
     }
@@ -159,8 +163,9 @@ export default function Messages() {
 
   // Filter conversations by contact name
   const filteredConversations = conversations.filter((c) => {
-    const partner =
-      (c.sender?._id || c.sender) === user?._id ? c.receiver : c.sender
+    const sender = Array.isArray(c.sender) ? c.sender[0] : c.sender
+    const receiver = Array.isArray(c.receiver) ? c.receiver[0] : c.receiver
+    const partner = sender?._id?.toString() === user?._id ? receiver : sender
     const name = partner?.name || ''
     return name.toLowerCase().includes(searchFilter.toLowerCase())
   })
@@ -213,14 +218,13 @@ export default function Messages() {
               </div>
             ) : (
               filteredConversations.map((c) => {
-                const partner =
-                  (c.sender?._id || c.sender) === user?._id
-                    ? c.receiver
-                    : c.sender
+                const sender = Array.isArray(c.sender) ? c.sender[0] : c.sender
+                const receiver = Array.isArray(c.receiver) ? c.receiver[0] : c.receiver
+                const partner = sender?._id?.toString() === user?._id ? receiver : sender
                 const partnerName = partner?.name || 'Fellow Student'
                 const partnerInitial = partnerName[0]?.toUpperCase() || 'S'
-                const isActive = activePartner?._id === partner?._id
-                const isUnread = !c.isRead && (c.receiver?._id || c.receiver) === user?._id
+                const isActive = activePartner?._id === partner?._id?.toString()
+                const isUnread = !c.isRead && receiver?._id?.toString() === user?._id
 
                 return (
                   <button

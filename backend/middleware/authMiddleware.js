@@ -19,16 +19,14 @@ const protect = async (req, res, next) => {
             // Fetch the user from the database and attach to request object (exclude password)
             req.user = await User.findById(decoded.id).select("-password");
 
-            next(); // Move to the next middleware or route handler
+            return next(); // Move to the next middleware or route handler
         } catch (error) {
             console.error("Token verification error:", error);
-            res.status(401).json({ message: "Not authorized, token failed" });
+            return res.status(401).json({ message: "Not authorized, token failed" });
         }
     }
 
-    if (!token) {
-        res.status(401).json({ message: "Not authorized, no token" });
-    }
+    return res.status(401).json({ message: "Not authorized, no token" });
 };
 
 module.exports = { protect };
